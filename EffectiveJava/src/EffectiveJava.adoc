@@ -10,10 +10,13 @@
   which returns the instance of the class.
 [source,java]
 ----
-public static Boolean valueOf(boolean b)
-{
-    return b ? Boolean.TRUE : Boolean.FALSE
+public class Boolean{
+    public static Boolean valueOf(boolean b)
+    {
+        return b ? Boolean.TRUE : Boolean.FALSE;
+    }
 }
+
 ----
 
 NOTE: Constructor overloading is not a preferred programming technique to create different instances of the class.
@@ -60,7 +63,10 @@ be getting an instance of type EnumSet.
 === *2.BUILDER*
 
 - Static Factory methods and builders have a limitation to number of optional parameters.
-- For eg- if its a nutrition based company,
+- For eg- if its a nutrition based company, there might be few mandatory details to be present like name, age, DOB etc.
+But there will many optional details. In such a case using the static methods or constructors does not solve the purpose.
+Using Builder is a best option in this case.
+-
 
 
 ====== MORE INFO:
