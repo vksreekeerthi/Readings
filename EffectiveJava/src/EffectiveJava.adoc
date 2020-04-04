@@ -1,0 +1,107 @@
+=== Effective Java Edition-3
+
+=== CREATING AND DESTROYING OBJECTS
+
+==== *1. STATIC METHODS*
+
+- Static Factory methods should be preferred over constructors
+- Static method is not same as the Factory method pattern.
+- A class must have a way to return an instance of the class to the client. This can be done by creating a static method
+  which returns the instance of the class.
+[source,java]
+----
+public static Boolean valueOf(boolean b)
+{
+    return b ? Boolean.TRUE : Boolean.FALSE
+}
+----
+
+NOTE: Constructor overloading is not a preferred programming technique to create different instances of the class.
+#why?#
+1. constructor overloading is done either by changing the type or number of parameters used.
+2. A new object will be created every time a constructor is invoked
+3. the user using this api will not be clear of which constructor servers which purpose whereas using static method solves this problem
+because the static methods have specific names which describes their purpose.
+
+==== Advantages of using static methods
+- static methods have names which describe the type of instance that will be returned by the method.
+- static methods don't create an object every time they invoked unlike constructors.
+
+NOTE: Boolean.valueOf(boolean) never creates an object. This technique is similar to ##Flyweight Pattern##.
+
+- static methods allows the mutable classes to reuse the already constructed objects which will prevent the creation of
+duplicate objects.
+
+NOTE: sometimes object creation may be expensive which can be avoided by reusing the existing objects which can be
+achieved by creating static methods instead of constructors.
+
+- usage of static methods in a class restricts the creation of instances for a class. Such classes are called the
+#instance controlled classes#.
+- static methods can return an instance of any subtype of their return type which gives the programmer to choose the
+class of the returning object.
+
+NOTE: For example, API can return objects without making their classes public. This kind of hiding implementation makes
+the API design very compact. This is a kind of #interface-based frameworks#
+
+- The class returned by the static methods can vary from call to call based on the input parameters.
+
+NOTE: For example,
+The EnumSet class has no public constructors. It has only static factories an two subClasses.
+Based on the enum type, the factory methods in static class returns one of the Subclass in OpenJDKImplementation.
+1. It returns RegularEnumSet instance if there are 64 or less elements which is backed by a Long.
+2. It returns JumboEnumSet instance if there are 65 or more elements which is backed by a Long Array.
+Either of the two implementations existence is hidden from the client. If one implementation is not useful for the client,
+It can be replaced by the other. The type of implementation is not client's concern. The only concern of the client would
+be getting an instance of type EnumSet.
+
+- TODO: Understand the fifth advantage mre and write in detail.
+
+
+=== *2.BUILDER*
+
+- Static Factory methods and builders have a limitation to number of optional parameters.
+- For eg- if its a nutrition based company,
+
+
+====== MORE INFO:
+
+1. what is flyweight pattern?
+
+- Flyweight pattern is primarily used to reduce the number of objects created and to decrease memory footprint and
+increase performance.
+- This type of design pattern comes under structural pattern as this pattern provides ways to
+decrease object count thus improving the object structure of application.
+- Flyweight pattern tries to reuse already existing similar kind objects by storing them and creates new object when
+no matching object is found.
+- We will demonstrate this pattern by drawing 20 circles of different locations but we will
+create only 5 objects. Only 5 colors are available so color property is used to check already existing Circle objects.
+
+2. Instance Controlled classes
+- It allows a class to guarantee that it is a singleton class or noninstantiable class
+- It guarantees that for an immutable value class, there are no 2 instances which are equal. This property is a basic
+feature of flyweight pattern.
+
+3. Interface Based Frameworks
+- Interfaces provide natural return types for the static factory methods.
+- Prior to java 8, interfaces were not allowed to have static methods.
+static factory methods of an interface were put into an non instantiable companion class.
+For example, the JAVA Collections API has about 40 different utility implementations of its interfaces providing unmodifiable,
+synchronised collections. All implementations are all under one non instantiable class called java.util.Collections.
+All these classes return non public objects.
+NOTE: Collection framework in java is currently much smaller than if it had 40 separate public implementation classes.
+This not only reduced the bulk of the API but also the conceptual weight of the API. If a programmer wants to use any
+object returned by the API, she has to only look at the interface of the returned object rather tan its implementation
+to understand what kind of object is returned.
+- After Java 8, the restriction of not using the static methods in an interface is now removed which allows having
+static methods in a interface. with this, the need for companion implementation class is now removed because all the
+public static methods must be in the interface itself.
+NOTE: Still the companion implementation might be necessary in some cases because in Java 8 all the static methods in
+te interface must be public. So there can be bulk implementation code in a package private classes.
+#Java 9 allows private static methods but the static fields and static member classes must be public.#
+
+
+
+
+
+
+
